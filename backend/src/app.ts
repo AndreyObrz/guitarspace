@@ -11,11 +11,6 @@ import { ValidationProblem, ProblemDetails, User, Health } from './types.js'
 import prismaPlugin from "./plugins/prisma.js";
 import jwtPlugin from "./plugins/jwt.js";
 import bcrypt from "bcrypt";
-/**
- * Временное in-memory хранилище. На следующей лабе оно уедет в Postgres + Prisma,
- * а пока этого достаточно, чтобы научиться писать маршруты и схемы.
- */
-
 
 export async function buildApp() {
   const app = Fastify({
@@ -28,12 +23,11 @@ export async function buildApp() {
   }).withTypeProvider<TypeBoxTypeProvider>()
 
   // Инфраструктурные плагины
-
   await app.register(helmet);
   await app.register(prismaPlugin);
   await app.register(jwtPlugin);
 
-  // Для dev открываем localhost фронтенда, чтобы CORS-запросы из браузера проходили.
+  // CORS
   await app.register(cors, {
     origin: [
       'https://andreyobrz.github.io',
@@ -81,7 +75,6 @@ export async function buildApp() {
   })
 
   // Глобальные обработчики ошибок
-
   app.setErrorHandler<FastifyError | ValidationProblem>((err, req, reply) => {
     const status = typeof err.statusCode === 'number' ? err.statusCode : 500
     const isValidation = err instanceof ValidationProblem
@@ -156,7 +149,6 @@ export async function buildApp() {
     async () => ({ ok: true })
   )
 
-  // hide скрывает сам маршрут из генерируемой спецификации.
   app.get(
     '/openapi.json',
     { schema: { hide: true } },
@@ -165,7 +157,7 @@ export async function buildApp() {
     }
   )
 
-    // ─── Works ───
+  // ─── Works ───
   app.get(
     '/api/works',
     {
@@ -248,7 +240,6 @@ export async function buildApp() {
     async (req, reply) => {
       const { id } = req.params as { id: string };
 
-      // id — это userId (а не id профиля)
       const profile = await app.prisma.profile.findUnique({
         where: { userId: id },
       });
@@ -288,7 +279,7 @@ export async function buildApp() {
   );
 
   // ─── Top ───
-    app.get(
+  app.get(
     '/api/top',
     {
       schema: {
@@ -298,14 +289,12 @@ export async function buildApp() {
       },
     },
     async (req) => {
-      // Топ-3 из БД (без isMe)
       const top3 = await app.prisma.topAuthor.findMany({
         where: { isMe: false },
         orderBy: { place: 'asc' },
         take: 3,
       });
 
-      // Пробуем получить текущего пользователя из токена (если он есть)
       let meBlock = null;
 
       try {
@@ -317,12 +306,7 @@ export async function buildApp() {
         });
 
         if (profile) {
-          // Находим "место" пользователя в общем рейтинге.
-          // Пока — заглушка: используем rank из профиля.
-          const place = profile.rank > 0 ? profile.rank : 999;
-          const points = profile.points;
-
-                    meBlock = {
+          meBlock = {
             place: profile.rank > 0 ? profile.rank : 999,
             name: profile.name,
             points: profile.points,
@@ -336,7 +320,7 @@ export async function buildApp() {
           };
         }
       } catch {
-        // Нет токена — ок, без блока "me"
+        // нет токена — ок
       }
 
       const authors = [
@@ -358,7 +342,7 @@ export async function buildApp() {
     }
   );
 
-    // ─── Auth ───
+  // ─── Auth ───
 
   // POST /api/auth/register
   app.post(
@@ -376,58 +360,67 @@ export async function buildApp() {
       },
     },
     async (req, reply) => {
-      const { email, password, name } = req.body as {
-        email: string;
-        password: string;
-        name?: string;
-      };
+      try {
+        const { email, password, name } = req.body as {
+          email: string;
+          password: string;
+          name?: string;
+        };
 
-      const existing = await app.prisma.user.findUnique({ where: { email } });
-      if (existing) {
-        return reply.code(409).send({
-          type: "about:blank",
-          title: "Conflict",
-          status: 409,
-          detail: "Email already registered",
-          instance: req.url,
+        app.log.info({ email }, "Register: start");
+
+        const existing = await app.prisma.user.findUnique({ where: { email } });
+        if (existing) {
+          return reply.code(409).send({
+            type: "about:blank",
+            title: "Conflict",
+            status: 409,
+            detail: "Email already registered",
+            instance: req.url,
+          });
+        }
+
+        const passwordHash = await bcrypt.hash(password, 10);
+        const user = await app.prisma.user.create({
+          data: {
+            email,
+            passwordHash,
+            name: name ?? null,
+          },
+          select: { id: true, email: true, name: true },
         });
+
+        app.log.info({ userId: user.id }, "Register: user created");
+
+        await app.prisma.profile.create({
+          data: {
+            userId: user.id,
+            name: user.name ?? email.split("@")[0] ?? "User",
+            username: "@" + email.split("@")[0],
+            avatarGradient: "linear-gradient(135deg, #ff6a1a, #ec4899)",
+            coverGradient: "linear-gradient(135deg, #8b5cf6, #ec4899, #ff6a1a)",
+            instruments: [],
+            bio: "",
+            points: 0,
+            rank: 0,
+            rankLabel: "Новичок",
+            publications: 0,
+            earnings: 0,
+            progressCurrent: 0,
+            progressTarget: 100,
+            progressLabel: "Ученик",
+          },
+        });
+
+        app.log.info({ userId: user.id }, "Register: profile created");
+
+        const token = app.jwt.sign({ sub: user.id, email: user.email });
+
+        return reply.code(201).send({ user, token });
+      } catch (err) {
+        app.log.error({ err }, "Register error");
+        return reply.code(500).send({ error: (err as Error).message });
       }
-
-      const passwordHash = await bcrypt.hash(password, 10);
-      const user = await app.prisma.user.create({
-        data: {
-          email,
-          passwordHash,
-          name: name ?? null,
-        },
-        select: { id: true, email: true, name: true },
-      });
-      // созда
-      await app.prisma.profile.create({
-        data: {
-          userId: user.id,
-          name: user.name ?? email.split("@")[0] ?? "User",
-          username: "@" + email.split("@")[0],
-          avatarGradient: "linear-gradient(135deg, #ff6a1a, #ec4899)",
-          coverGradient: "linear-gradient(135deg, #8b5cf6, #ec4899, #ff6a1a)",
-          instruments: [],
-          bio: "",
-          points: 0,
-          rank: 0,
-          rankLabel: "Новичок",
-          publications: 0,
-          earnings: 0,
-          progressCurrent: 0,
-          progressTarget: 100,
-          progressLabel: "Ученик",
-        },
-      });
-
-
-
-      const token = app.jwt.sign({ sub: user.id, email: user.email });
-
-      return reply.code(201).send({ user, token });
     }
   );
 
@@ -505,4 +498,3 @@ export async function buildApp() {
 
   return app
 }
-
