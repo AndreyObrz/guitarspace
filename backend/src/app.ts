@@ -35,7 +35,10 @@ export async function buildApp() {
 
   // Для dev открываем localhost фронтенда, чтобы CORS-запросы из браузера проходили.
   await app.register(cors, {
-    origin: [/^http:\/\/localhost:\d+$/],
+    origin: [
+      'https://andreyobrz.github.io',
+      /^http:\/\/localhost:\d+$/,
+    ],
     credentials: false,
   })
 
