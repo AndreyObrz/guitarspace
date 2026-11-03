@@ -1,0 +1,74 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #fff;
+}
+
+.hero p {
+  margin: 0;
+  font-size: 14px;
+  color: #9aa0a6;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #26262a;
+  background: #1a1a1c;
+  color: #9aa0a6;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.tab:hover {
+  color: #fff;
+  border-color: #3a3a40;
+}
+
+.tabActive {
+  background: #ff6a1a;
+  border-color: #ff6a1a;
+  color: #fff;
+}
+
+.tabActive:hover {
+  background: #ff8f4d;
+  border-color: #ff8f4d;
+  color: #fff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 80px;   /* чтобы при скролле сайдбар оставался видимым */
+}

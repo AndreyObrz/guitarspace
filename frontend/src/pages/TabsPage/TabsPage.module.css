@@ -1,0 +1,78 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hero h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #fff;
+}
+
+.hero p {
+  margin: 0;
+  font-size: 14px;
+  color: #9aa0a6;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sortBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #26262a;
+  background: #1a1a1c;
+  color: #fff;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.sortBtn:hover {
+  border-color: #3a3a40;
+}
+
+.filters {
+  background: #1a1a1c;
+  border: 1px solid #26262a;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.loadMore {
+  align-self: center;
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 1px solid #26262a;
+  background: #1a1a1c;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.loadMore:hover {
+  border-color: #ff6a1a;
+  color: #ff6a1a;
+}

@@ -1,0 +1,1 @@
+export { WorkCard, type WorkCardProps, type WorkTag } from "./WorkCard";

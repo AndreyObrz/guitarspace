@@ -1,0 +1,113 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.preview {
+  aspect-ratio: 21 / 9;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.levelBadge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.authorName {
+  font-size: 14px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.buy {
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: none;
+  background: #ff6a1a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.buy:hover {
+  background: #ff8f4d;
+}
+
+.specs {
+  background: #1a1a1c;
+  border: 1px solid #26262a;
+  border-radius: 16px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.spec {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.specLabel {
+  font-size: 11px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.specValue {
+  font-size: 15px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.loading {
+  color: #9aa0a6;
+  padding: 40px 0;
+}
+
+.error {
+  color: #ef4444;
+  padding: 40px 0;
+}

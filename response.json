@@ -1,0 +1,1 @@
+{"type":"about:blank","title":"Bad Request","status":400,"detail":"Body is not valid JSON but content-type is set to 'application/json'","instance":"/api/auth/login"}

@@ -1,0 +1,383 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #fff;
+}
+
+.hero p {
+  margin: 0;
+  font-size: 14px;
+  color: #9aa0a6;
+}
+
+/* Переключатель периодов */
+
+.periods {
+  display: flex;
+  gap: 8px;
+}
+
+.period {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid #26262a;
+  background: #1a1a1c;
+  color: #9aa0a6;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.period:hover {
+  color: #fff;
+  border-color: #3a3a40;
+}
+
+.periodActive {
+  background: rgba(255, 106, 26, 0.12);
+  border-color: #ff6a1a;
+  color: #ff6a1a;
+  font-weight: 600;
+}
+
+/* Раскладка: слева пьедестал + таблица, справа «Моё место» */
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 80px;
+}
+
+/* Пьедестал */
+
+.podium {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr 1fr;
+  gap: 12px;
+  align-items: end;
+}
+
+.podiumCard {
+  background: #1a1a1c;
+  border: 1px solid #26262a;
+  border-radius: 16px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.podiumCardFirst {
+  background: linear-gradient(180deg, rgba(255, 106, 26, 0.15), #1a1a1c);
+  border-color: #ff6a1a;
+  padding: 28px 16px;
+}
+
+.podiumPlace {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 700;
+}
+
+.podiumPlaceFirst {
+  color: #ff6a1a;
+  font-size: 16px;
+}
+
+.podiumName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.podiumPoints {
+  font-size: 13px;
+  color: #ff6a1a;
+  font-weight: 600;
+}
+
+.podiumDelta {
+  font-size: 11px;
+  color: #4ade80;
+}
+
+.podiumRank {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+/* Таблица */
+
+.table {
+  background: #1a1a1c;
+  border: 1px solid #26262a;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.tableHead,
+.tableRow {
+  display: grid;
+  grid-template-columns: 60px 1fr 140px 100px 80px 110px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+.tableHead {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #6b7280;
+  border-bottom: 1px solid #26262a;
+}
+
+.tableRow {
+  border-bottom: 1px solid #1f1f22;
+  font-size: 14px;
+  color: #fff;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableRow:hover {
+  background: #1f1f22;
+}
+
+.tableRowMe {
+  background: rgba(255, 106, 26, 0.08);
+}
+
+.tableRowMe:hover {
+  background: rgba(255, 106, 26, 0.12);
+}
+
+.cellPlace {
+  font-weight: 700;
+  color: #6b7280;
+}
+
+.cellPlaceTop {
+  color: #ff6a1a;
+}
+
+.cellAuthor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cellName {
+  font-weight: 600;
+}
+
+.cellRank {
+  font-size: 13px;
+  color: #9aa0a6;
+}
+
+.cellPoints {
+  font-weight: 600;
+}
+
+.cellDelta {
+  font-weight: 600;
+}
+
+.deltaUp {
+  color: #4ade80;
+}
+
+.deltaDown {
+  color: #ef4444;
+}
+
+.deltaFlat {
+  color: #6b7280;
+}
+
+.challengeBtn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid #26262a;
+  background: transparent;
+  color: #9aa0a6;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.challengeBtn:hover {
+  border-color: #ff6a1a;
+  color: #ff6a1a;
+}
+
+.youBadge {
+  color: #ff6a1a;
+  font-size: 11px;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.divider {
+  text-align: center;
+  color: #3a3a40;
+  font-size: 14px;
+  padding: 8px 0;
+  letter-spacing: 4px;
+}
+
+/* Моё место */
+
+.myPlace {
+  background: #1a1a1c;
+  border: 1px solid #26262a;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.myPlaceLabel {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.myPlaceValue {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ff6a1a;
+  line-height: 1;
+}
+
+.myPlaceSub {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.myPlaceProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.myPlaceNext {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #9aa0a6;
+}
+
+.nextList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.nextItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #9aa0a6;
+}
+
+.nextItem:hover {
+  background: #26262a;
+}
+
+.nextItemPlace {
+  width: 24px;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.nextItemName {
+  flex: 1;
+  color: #fff;
+  margin-left: 8px;
+}
+
+.nextItemPoints {
+  font-size: 12px;
+  color: #9aa0a6;
+}
+
+.myPlaceActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.btnPrimary {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  background: #ff6a1a;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btnPrimary:hover {
+  background: #ff8f4d;
+}
+
+.btnGhost {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid #26262a;
+  background: transparent;
+  color: #9aa0a6;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btnGhost:hover {
+  border-color: #3a3a40;
+  color: #fff;
+}
+
+.loading {
+  color: #9aa0a6;
+  padding: 40px 0;
+}

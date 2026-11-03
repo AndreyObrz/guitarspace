@@ -1,0 +1,59 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hero h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #fff;
+}
+
+.hero p {
+  margin: 0;
+  font-size: 14px;
+  color: #9aa0a6;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.teachBtn {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid #ff6a1a;
+  background: transparent;
+  color: #ff6a1a;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.teachBtn:hover {
+  background: #ff6a1a;
+  color: #fff;
+}
+
+.filters {
+  background: #1a1a1c;
+  border: 1px solid #26262a;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}

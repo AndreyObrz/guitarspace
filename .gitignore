@@ -1,0 +1,38 @@
+# Системные
+.DS_Store
+Thumbs.db
+
+# Логи
+logs/
+*.log
+
+# Node
+node_modules/
+
+# Сборки
+backend/dist/
+frontend/dist/
+
+# Prisma client
+backend/src/generated/prisma/
+
+# Покрытие
+coverage/
+
+# Env (секреты)
+.env
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+!.env.production
+!**/.env.production
+!**/.env.development
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+

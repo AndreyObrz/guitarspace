@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  profile      Profile?
+}
+
+model Work {
+  id              String   @id
+  tag             String   // "tab" | "arrangement" | "tab_video"
+  title           String
+  authorName      String
+  price           Int
+  previewGradient String
+  style           String
+  level           String   // "beginner" | "intermediate" | "advanced" | "any"
+
+  // уникальные поля
+  instrument      String?
+  pages           Int?
+  tuning          String?
+  hasGtp          Boolean?
+  instruments     String[]   // массив для аранжировок
+  partsCount      Int?
+  videoDuration   Int?
+
+  createdAt       DateTime @default(now())
+}
+
+model Course {
+  id              String   @id
+  tag             String   @default("course")
+  title           String
+  authorName      String
+  price           Int
+  previewGradient String
+  style           String
+  level           String
+  lessons         Int
+  duration        String
+  hasCertificate  Boolean?
+  createdAt       DateTime @default(now())
+}
+
+model Profile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name           String
+  username       String
+  isTeacher      Boolean  @default(false)
+  avatarGradient String
+  coverGradient  String
+  instruments    String[]
+  bio            String   @default("")
+  youtube        String?
+  telegram       String?
+  website        String?
+
+  points         Int      @default(0)
+  rank           Int      @default(0)
+  rankLabel      String   @default("Новичок")
+  publications   Int      @default(0)
+  earnings       Int      @default(0)
+
+  progressCurrent Int     @default(0)
+  progressTarget  Int     @default(100)
+  progressLabel   String  @default("Ученик")
+
+  createdAt      DateTime @default(now())
+}
+
+model TopAuthor {
+  id        String   @id @default(cuid())
+  place     Int      @unique
+  name      String
+  points    Int
+  delta     Int
+  rankLabel String
+  isMe      Boolean  @default(false)
+}
