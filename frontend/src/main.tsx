@@ -25,7 +25,7 @@ enableMocking().then(() => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AuthProvider>
-          <BrowserRouter>
+          <BrowserRouter basename="/guitarspace">
             <App />
           </BrowserRouter>
         </AuthProvider>
