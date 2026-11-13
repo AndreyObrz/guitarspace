@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Лад Гитариста</title>
+    <script>
+      // Сохраняем путь, который пытался открыть пользователь (например, /guitarspace/feed)
+      sessionStorage.setItem('redirectPath', window.location.pathname + window.location.search);
+      // Перенаправляем на главную страницу проекта
+      window.location.replace('/guitarspace/');
+    </script>
+  </head>
+</html>

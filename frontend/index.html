@@ -5,6 +5,16 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Лад Гитариста</title>
+    <script>
+      // Проверяем, есть ли сохраненный путь (значит, мы пришли с 404.html)
+      const redirectPath = sessionStorage.getItem('redirectPath');
+      if (redirectPath) {
+        sessionStorage.removeItem('redirectPath');
+        // Меняем URL обратно на нужный, без перезагрузки
+        window.history.replaceState(null, '', redirectPath);
+      }
+    </script>
+
   </head>
   <body>
     <div id="root"></div>
