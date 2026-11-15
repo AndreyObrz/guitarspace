@@ -23,6 +23,7 @@ model Work {
   tag             String   // "tab" | "arrangement" | "tab_video"
   title           String
   authorName      String
+  userId          String
   price           Int
   previewGradient String
   style           String
