@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Menu, MenuItem } from "@mui/material";
 import s from "./Header.module.css";
@@ -11,38 +11,37 @@ import {
 } from "@mui/icons-material";
 import { Avatar } from "@/components/ui";
 import { useAuth } from "@/context/auth";
-import { useEffect } from "react";
 import { fetchProfile, type ProfileDto } from "@/api/profileApi";
+import { UploadWorkModal } from "@/components/UploadWorkModal";
 
 export function Header() {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const [profile, setProfile] = useState<ProfileDto | null>(null);
-
-useEffect(() => {
-  if (!user?.id) {
-    setProfile(null);
-    return;
-  }
-
-  let mounted = true;
-  (async () => {
-    try {
-      const data = await fetchProfile(user.id);
-      if (mounted) setProfile(data);
-    } catch {
-      // профиль не создан
-    }
-  })();
-
-  return () => {
-    mounted = false;
-  };
-}, [user?.id]);
-  
-  const navigate = useNavigate();
-  
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const [uploadOpen, setUploadOpen] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) {
+      setProfile(null);
+      return;
+    }
+
+    let mounted = true;
+    (async () => {
+      try {
+        const data = await fetchProfile(user.id);
+        if (mounted) setProfile(data);
+      } catch {
+        // профиль не создан
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, [user?.id]);
 
   const handleAvatarClick = (e: React.MouseEvent<HTMLElement>) => {
     setMenuAnchor(e.currentTarget);
@@ -87,7 +86,11 @@ useEffect(() => {
           <span>№{profile?.stats.rank ?? "—"} в тоне</span>
         </div>
 
-        <button className={s.upload} type="button">
+        <button
+          className={s.upload}
+          type="button"
+          onClick={() => setUploadOpen(true)}
+        >
           <FileUploadOutlined fontSize="small" />
           <span>Загрузить работу</span>
         </button>
@@ -118,6 +121,12 @@ useEffect(() => {
           <MenuItem onClick={handleSignOut}>Выйти</MenuItem>
         </Menu>
       </div>
+
+      <UploadWorkModal
+        open={uploadOpen}
+        onClose={() => setUploadOpen(false)}
+        onSuccess={() => window.location.reload()}
+      />
     </header>
   );
 }

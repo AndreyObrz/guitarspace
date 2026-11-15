@@ -7,7 +7,7 @@ import { STATUS_CODES } from 'node:http'
 import { Type as T } from '@sinclair/typebox'
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import { ValidationProblem, ProblemDetails, User, Health } from './types.js'
-
+import { randomUUID } from 'node:crypto';
 import prismaPlugin from "./plugins/prisma.js";
 import jwtPlugin from "./plugins/jwt.js";
 import bcrypt from "bcrypt";
@@ -172,6 +172,52 @@ export async function buildApp() {
         return { items, page: 1, total: items.length };
         }
   );
+
+    // POST /api/works — создание работы
+  app.post(
+    '/api/works',
+    {
+      schema: {
+        operationId: 'createWork',
+        tags: ['Works'],
+        summary: 'Создать работу',
+        body: T.Object({
+          title: T.String({ minLength: 1 }),
+          authorName: T.String({ minLength: 1 }),
+          price: T.Number({ minimum: 0 }),
+          tag: T.String(),
+          style: T.String(),
+          level: T.String(),
+        }),
+      },
+    },
+    async (req, reply) => {
+      const { title, authorName, price, tag, style, level } = req.body as {
+        title: string;
+        authorName: string;
+        price: number;
+        tag: string;
+        style: string;
+        level: string;
+      };
+
+      const work = await app.prisma.work.create({
+        data: {
+          id: crypto.randomUUID(),
+          title,
+          authorName,
+          price,
+          tag,
+          style,
+          level,
+          previewGradient: 'linear-gradient(135deg, #ff6a1a, #ff2e63)',
+        },
+      });
+
+      return reply.code(201).send(work);
+    }
+  );
+
 
   app.get(
     '/api/works/:id',
