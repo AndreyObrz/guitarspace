@@ -3,7 +3,7 @@ import {
   Dialog, DialogTitle, DialogContent, DialogActions,
   Button, TextField, MenuItem, Box,
 } from "@mui/material";
-import { http } from "@/api/http";
+
 import { useAuth } from "@/context/auth";
 import { createWork } from "@/api/worksApi";
 interface Props {
