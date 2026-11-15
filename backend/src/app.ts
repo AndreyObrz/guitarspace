@@ -174,7 +174,7 @@ export async function buildApp() {
   );
 
     // POST /api/works — создание работы
-  app.post(
+    app.post(
     '/api/works',
     {
       schema: {
@@ -188,28 +188,35 @@ export async function buildApp() {
           tag: T.String(),
           style: T.String(),
           level: T.String(),
+          instrument: T.Optional(T.String()),
+          pages: T.Optional(T.Number()),
         }),
       },
     },
     async (req, reply) => {
-      const { title, authorName, price, tag, style, level } = req.body as {
-        title: string;
-        authorName: string;
-        price: number;
-        tag: string;
-        style: string;
-        level: string;
-      };
+      const { title, authorName, price, tag, style, level, instrument, pages } =
+        req.body as {
+          title: string;
+          authorName: string;
+          price: number;
+          tag: string;
+          style: string;
+          level: string;
+          instrument?: string;
+          pages?: number;
+        };
 
       const work = await app.prisma.work.create({
         data: {
-          id: crypto.randomUUID(),
+          id: randomUUID(),
           title,
           authorName,
           price,
           tag,
           style,
           level,
+          instrument: instrument ?? null,
+          pages: pages ?? null,
           previewGradient: 'linear-gradient(135deg, #ff6a1a, #ff2e63)',
         },
       });
