@@ -21,8 +21,13 @@ export function RegisterPage() {
     try {
       await signUp(email, password, name || undefined);
       navigate("/feed");
-    } catch (err) {
-      setError((err as Error).message || "Ошибка регистрации");
+    } catch (err: any) {
+      const detail =
+        err?.response?.data?.detail ||
+        err?.response?.data?.title ||
+        err?.message ||
+        "Ошибка регистрации";
+      setError(detail);
     } finally {
       setBusy(false);
     }
