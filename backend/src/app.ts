@@ -375,7 +375,7 @@ export async function buildApp() {
             type: "about:blank",
             title: "Conflict",
             status: 409,
-            detail: "Email already registered",
+            detail: "Этот email уже зарегистрирован",
             instance: req.url,
           });
         }
