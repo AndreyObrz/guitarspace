@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import s from "./WorkPage.module.css";
 import { Avatar } from "@/components/ui";
-import { fetchWorkById, type WorkDto } from "@/api/worksApi";
+import { fetchWorkById, deleteWork, type WorkDto } from "@/api/worksApi";
+import { useAuth } from "@/context/auth";
 
 const TAG_LABEL: Record<WorkDto["tag"], string> = {
   tab: "ТАБ",
@@ -12,6 +13,9 @@ const TAG_LABEL: Record<WorkDto["tag"], string> = {
 
 export function WorkPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   const [work, setWork] = useState<WorkDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,6 +47,16 @@ export function WorkPage() {
 
   const isFree = work.price === 0;
 
+  const handleDelete = async () => {
+    if (!confirm("Удалить работу?")) return;
+    try {
+      await deleteWork(work.id);
+      navigate("/feed");
+    } catch (e) {
+      alert((e as Error).message || "Ошибка удаления");
+    }
+  };
+
   return (
     <div className={s.page}>
       <div className={s.preview} style={{ background: work.previewGradient }}>
@@ -64,6 +78,26 @@ export function WorkPage() {
         >
           {isFree ? "Скачать" : "Купить"}
         </button>
+
+        {user?.name === work.authorName && (
+          <button
+            type="button"
+            onClick={handleDelete}
+            style={{
+              padding: "12px 24px",
+              borderRadius: 999,
+              border: "1px solid #ef4444",
+              background: "transparent",
+              color: "#ef4444",
+              fontWeight: 700,
+              fontSize: 15,
+              cursor: "pointer",
+              fontFamily: "inherit",
+            }}
+          >
+            Удалить
+          </button>
+        )}
       </div>
 
       <div className={s.specs}>
@@ -97,7 +131,6 @@ export function WorkPage() {
             </div>
           </>
         )}
-
 
         {work.tag === "arrangement" && (
           <div className={s.spec}>

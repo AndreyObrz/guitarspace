@@ -177,6 +177,7 @@ export async function buildApp() {
     app.post(
     '/api/works',
     {
+      onRequest: [app.authenticate],
       schema: {
         operationId: 'createWork',
         tags: ['Works'],
@@ -212,9 +213,15 @@ export async function buildApp() {
           pages?: number;
         };
 
+      const userId = req.user?.sub;
+      if (!userId) {
+        return reply.code(401).send({ error: 'Unauthorized' });
+      }
+
       const work = await app.prisma.work.create({
         data: {
           id: randomUUID(),
+          userId,
           title,
           authorName,
           price,
@@ -231,6 +238,34 @@ export async function buildApp() {
     }
   );
 
+    // DELETE /api/works/:id — удалить работу
+  app.delete(
+    '/api/works/:id',
+    {
+      onRequest: [app.authenticate],
+      schema: {
+        operationId: 'deleteWork',
+        tags: ['Works'],
+        summary: 'Удалить работу',
+      },
+    },
+    async (req, reply) => {
+      const { id } = req.params as { id: string };
+      const userId = req.user.sub;
+
+      const work = await app.prisma.work.findUnique({ where: { id } });
+      if (!work) {
+        return reply.code(404).send({ error: 'Not found' });
+      }
+
+      if (work.userId !== userId) {
+        return reply.code(403).send({ error: 'Forbidden' });
+      }
+
+      await app.prisma.work.delete({ where: { id } });
+      return { ok: true };
+    }
+  );
 
   app.get(
     '/api/works/:id',

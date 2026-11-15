@@ -57,3 +57,11 @@ export async function fetchWorkById(id: string): Promise<WorkDto> {
   const { data } = await http.get<WorkDto>(`/works/${id}`);
   return data;
 }
+
+
+export async function deleteWork(id: string): Promise<void> {
+  const token = localStorage.getItem("gs:token");
+  await http.delete(`/works/${id}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
+}
