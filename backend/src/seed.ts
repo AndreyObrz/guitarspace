@@ -3,11 +3,22 @@ import { PrismaClient } from "./generated/prisma/client.js";
 const prisma = new PrismaClient();
 
 async function main() {
+  // ─── Находим тестового пользователя ───
+  const testUser = await prisma.user.findUnique({
+    where: { email: "test@example.com" },
+  });
+
+  if (!testUser) {
+    console.log("⚠️ test@example.com не найден. Сначала зарегистрируйся через API.");
+    return;
+  }
+
   // ─── Работы ───
   await prisma.work.createMany({
     data: [
       {
         id: "1",
+        userId: testUser.id,
         tag: "arrangement",
         title: "Bohemian Rhapsody — полная аранжировка для 6-струнной",
         authorName: "Кирилл Морозов",
@@ -20,6 +31,7 @@ async function main() {
       },
       {
         id: "2",
+        userId: testUser.id,
         tag: "tab",
         title: "Aurora — fingerstyle аранжировка для 6-струнной",
         authorName: "Кирилл Морозов",
@@ -34,6 +46,7 @@ async function main() {
       },
       {
         id: "3",
+        userId: testUser.id,
         tag: "tab_video",
         title: "Скандинавский джаз — импровизация по боксам",
         authorName: "Ида Хольм",
@@ -47,6 +60,7 @@ async function main() {
       },
       {
         id: "4",
+        userId: testUser.id,
         tag: "tab",
         title: "Ноктюрн Op. 9 №2 — классическая аранжировка",
         authorName: "Ева Ланге",
@@ -61,6 +75,7 @@ async function main() {
       },
       {
         id: "5",
+        userId: testUser.id,
         tag: "arrangement",
         title: "La Bamba — аранжировка для трёх гитар",
         authorName: "Марк Доваль",
@@ -73,6 +88,7 @@ async function main() {
       },
       {
         id: "6",
+        userId: testUser.id,
         tag: "tab",
         title: "Take Five — разбор необычного размера 5/4",
         authorName: "Кирилл Морозов",
@@ -165,38 +181,31 @@ async function main() {
   });
 
   // ─── Профиль ───
-    // ─── Профиль для тестового пользователя ───
-  const testUser = await prisma.user.findUnique({
-    where: { email: "test@example.com" },
+  await prisma.profile.upsert({
+    where: { userId: testUser.id },
+    update: {},
+    create: {
+      userId: testUser.id,
+      name: testUser.name ?? "Тест Тестов",
+      username: "@test",
+      isTeacher: true,
+      avatarGradient: "linear-gradient(135deg, #ff6a1a, #ec4899)",
+      coverGradient: "linear-gradient(135deg, #8b5cf6, #ec4899, #ff6a1a)",
+      instruments: ["6-струнная", "Fingerstyle", "Джаз-блюз"],
+      bio: "Играю 14 лет, преподаю fingerstyle и джаз-блюз.",
+      youtube: "youtube.com/andreyguitar",
+      telegram: "@andrey_guitar",
+      website: "andrey-tabs.ru",
+      points: 4820,
+      rank: 12,
+      rankLabel: "Мастер",
+      publications: 128,
+      earnings: 84500,
+      progressCurrent: 4820,
+      progressTarget: 5800,
+      progressLabel: "Виртуоз",
+    },
   });
-
-  if (testUser) {
-    await prisma.profile.upsert({
-      where: { userId: testUser.id },
-      update: {},
-      create: {
-        userId: testUser.id,
-        name: testUser.name ?? "Тест Тестов",
-        username: "@test",
-        isTeacher: true,
-        avatarGradient: "linear-gradient(135deg, #ff6a1a, #ec4899)",
-        coverGradient: "linear-gradient(135deg, #8b5cf6, #ec4899, #ff6a1a)",
-        instruments: ["6-струнная", "Fingerstyle", "Джаз-блюз"],
-        bio: "Играю 14 лет, преподаю fingerstyle и джаз-блюз.",
-        youtube: "youtube.com/andreyguitar",
-        telegram: "@andrey_guitar",
-        website: "andrey-tabs.ru",
-        points: 4820,
-        rank: 12,
-        rankLabel: "Мастер",
-        publications: 128,
-        earnings: 84500,
-        progressCurrent: 4820,
-        progressTarget: 5800,
-        progressLabel: "Виртуоз",
-      },
-    });
-  }
 
   // ─── Топ ───
   await prisma.topAuthor.createMany({
