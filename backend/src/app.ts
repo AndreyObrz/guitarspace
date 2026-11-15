@@ -424,7 +424,7 @@ export async function buildApp() {
     }
   );
 
-  // POST /api/auth/login
+    // POST /api/auth/login
   app.post(
     "/api/auth/login",
     {
@@ -450,7 +450,7 @@ export async function buildApp() {
           type: "about:blank",
           title: "Unauthorized",
           status: 401,
-          detail: "Invalid email or password",
+          detail: "Неверный email или пароль",
           instance: req.url,
         });
       }
@@ -461,7 +461,7 @@ export async function buildApp() {
           type: "about:blank",
           title: "Unauthorized",
           status: 401,
-          detail: "Invalid email or password",
+          detail: "Неверный email или пароль",
           instance: req.url,
         });
       }

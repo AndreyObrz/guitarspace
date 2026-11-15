@@ -20,8 +20,13 @@ export function LoginPage() {
     try {
       await signIn(email, password);
       navigate("/feed");
-    } catch (err) {
-      setError((err as Error).message || "Ошибка входа");
+    } catch (err: any) {
+      const detail =
+        err?.response?.data?.detail ||
+        err?.response?.data?.title ||
+        err?.message ||
+        "Ошибка входа";
+      setError(detail);
     } finally {
       setBusy(false);
     }
