@@ -58,7 +58,25 @@ export async function fetchWorkById(id: string): Promise<WorkDto> {
   return data;
 }
 
+// ─── Создание работы (с токеном) ───
+export async function createWork(data: {
+  title: string;
+  authorName: string;
+  price: number;
+  tag: string;
+  style: string;
+  level: string;
+  instrument?: string;
+  pages?: number;
+}): Promise<WorkDto> {
+  const token = localStorage.getItem("gs:token");
+  const { data: res } = await http.post<WorkDto>("/works", data, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
+  return res;
+}
 
+// ─── Удаление работы (с токеном) ───
 export async function deleteWork(id: string): Promise<void> {
   const token = localStorage.getItem("gs:token");
   await http.delete(`/works/${id}`, {

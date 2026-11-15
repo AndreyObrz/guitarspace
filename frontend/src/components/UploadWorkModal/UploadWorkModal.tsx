@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import { http } from "@/api/http";
 import { useAuth } from "@/context/auth";
-
+import { createWork } from "@/api/worksApi";
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -30,7 +30,7 @@ export function UploadWorkModal({ open, onClose, onSuccess }: Props) {
     setBusy(true);
 
     try {
-      await http.post("/works", {
+      await createWork({
         title,
         authorName: user?.name ?? "Гость",
         price: Number(price),
