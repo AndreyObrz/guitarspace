@@ -33,6 +33,7 @@ export async function buildApp() {
       'https://andreyobrz.github.io',
       /^http:\/\/localhost:\d+$/,
     ],
+    methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: false,
   })
 
