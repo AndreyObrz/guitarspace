@@ -150,7 +150,7 @@ export function UploadWorkModal({ open, onClose, onSuccess }: Props) {
             sx={inputStyles}
           >
             <MenuItem value="6-string">6-струнная</MenuItem>
-            <MenuItem value="7-string">7-струнная</MenuItem>
+            <MenuItem value="12-string">12-струнная</MenuItem>
             <MenuItem value="classical">Классика</MenuItem>
             <MenuItem value="bass">Бас-гитара</MenuItem>
             <MenuItem value="electric">Электрогитара</MenuItem>
